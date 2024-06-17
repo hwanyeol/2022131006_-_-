@@ -1,5 +1,5 @@
 from tkinter import Tk
-from chapter2.프로젝트.주소록 import AddressBook
+from 프로젝트.주소록 import AddressBook
 
 if __name__ == '__main__':
     root = Tk()  # Tkinter의 Tk 클래스를 사용하여 루트 윈도우 생성
