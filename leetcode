@@ -85,82 +85,1391 @@ print(c.addTwoNumbers([2,4,3],[5,6,4]))
 482
 485
 492
+from typing import List
+import math
+
+class Solution:
+    def constructRectangle(self, area: int) -> List[int]:
+        w = int(math.sqrt(area))
+        while area % w != 0:
+            w -= 1
+        l = area // w
+        return [l, w]
+
 495
+from typing import List
+
+class Solution:
+    def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        if not timeSeries:
+            return 0
+        
+        total_duration = 0
+        
+        for i in range(len(timeSeries) - 1):
+            total_duration += min(timeSeries[i + 1] - timeSeries[i], duration)
+        
+        total_duration += duration
+        
+        return total_duration
+
 496
+from typing import List
+
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        next_greater = {}
+        stack = []
+        
+        for num in reversed(nums2):
+            while stack and stack[-1] <= num:
+                stack.pop()
+            if stack:
+                next_greater[num] = stack[-1]
+            else:
+                next_greater[num] = -1
+            stack.append(num)
+        
+        return [next_greater[num] for num in nums1]
+
 500
+from typing import List
+
+class Solution:
+    def findWords(self, words: List[str]) -> List[str]:
+        row1 = set("qwertyuiop")
+        row2 = set("asdfghjkl")
+        row3 = set("zxcvbnm")
+        
+        result = []
+        
+        for word in words:
+            lower_word = set(word.lower())
+            if lower_word <= row1 or lower_word <= row2 or lower_word <= row3:
+                result.append(word)
+        
+        return result
+
 501
+from typing import Optional, List
+from collections import defaultdict
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        def inorder(node):
+            if node:
+                inorder(node.left)
+                count[node.val] += 1
+                inorder(node.right)
+
+        count = defaultdict(int)
+        inorder(root)
+
+        max_count = max(count.values())
+        return [key for key, val in count.items() if val == max_count]
+
 504
 506
+from typing import List
+
+class Solution:
+    def findRelativeRanks(self, score: List[int]) -> List[str]:
+        # Create a sorted list of scores in descending order
+        sorted_scores = sorted(score, reverse=True)
+        
+        # Create a dictionary to map each score to its rank
+        rank_dict = {}
+        for i, s in enumerate(sorted_scores):
+            if i == 0:
+                rank_dict[s] = "Gold Medal"
+            elif i == 1:
+                rank_dict[s] = "Silver Medal"
+            elif i == 2:
+                rank_dict[s] = "Bronze Medal"
+            else:
+                rank_dict[s] = str(i + 1)
+        
+        # Generate the result list using the rank dictionary
+        result = [rank_dict[s] for s in score]
+        
+        return result
+
 507
+class Solution:
+    def checkPerfectNumber(self, num: int) -> bool:
+        if num <= 1:
+            return False
+
+        divisors_sum = 1
+        sqrt_num = int(num ** 0.5)
+        
+        for i in range(2, sqrt_num + 1):
+            if num % i == 0:
+                divisors_sum += i
+                if i != num // i:
+                    divisors_sum += num // i
+        
+        return divisors_sum == num
+
 509
 520
+class Solution:
+    def detectCapitalUse(self, word: str) -> bool:
+        if word.isupper():
+            return True
+        
+        if word.islower():
+            return True
+        
+        if word[0].isupper() and word[1:].islower():
+            return True
+        
+        return False
+
 521
+class Solution:
+    def findLUSlength(self, a: str, b: str) -> int:
+        if a == b:
+            return -1
+        else:
+            return max(len(a), len(b))
+  
 530
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        self.min_diff = float('inf')
+        self.prev_val = None
+        
+        def inorder(node):
+            if not node:
+                return
+            
+            inorder(node.left)
+            
+            if self.prev_val is not None:
+                self.min_diff = min(self.min_diff, node.val - self.prev_val)
+                
+            self.prev_val = node.val
+            
+            inorder(node.right)
+        
+        inorder(root)
+        
+        return self.min_diff
+
+   
 541
+class Solution:
+    def reverseStr(self, s: str, k: int) -> str:
+        ans = ""
+        def helper(org=s):
+            nonlocal ans
+            n = 2*k
+            if len(org)<k:
+                ans += org[::-1]
+                return
+            else:
+                while len(org) > k:
+                    t = org[0:n]
+                    org = org[n:]
+                    x = t[0:k]
+                    t = t[k:]
+                    ans += x[::-1] + t
+                if len(org) <=k:
+                    ans += org[::-1]
+            return
+        helper()
+        return ans
 543
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        self.max_diameter = 0
+        
+        def maxDepth(node):
+            if not node:
+                return 0
+            
+            left_depth = maxDepth(node.left)
+            right_depth = maxDepth(node.right)
+            
+            # Update max diameter found so far
+            self.max_diameter = max(self.max_diameter, left_depth + right_depth)
+            
+            # Return the max depth of the current node
+            return 1 + max(left_depth, right_depth)
+        
+        maxDepth(root)
+        
+        return self.max_diameter
+
 551
+class Solution:
+    def checkRecord(self, s: str) -> bool:
+        count_A = 0
+        count_L = 0
+        
+        for char in s:
+            if char == 'A':
+                count_A += 1
+                if count_A > 1:
+                    return False
+                count_L = 0  # Reset consecutive 'L' count
+            elif char == 'L':
+                count_L += 1
+                if count_L > 2:
+                    return False
+            else:
+                count_L = 0  # Reset consecutive 'L' count
+        
+        return True
+
 557
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        words = s.split()  # 문자열을 공백을 기준으로 단어로 나눔
+        reversed_words = [word[::-1] for word in words]  # 각 단어를 뒤집음
+        reversed_sentence = ' '.join(reversed_words)  # 뒤집힌 단어들을 다시 문자열로 연결
+        return reversed_sentence  # 결과 반환
+
 561
+from typing import List
+
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        nums.sort()  # 배열을 오름차순으로 정렬
+        result = 0
+        for i in range(0, len(nums), 2):
+            result += nums[i]  # 짝수 인덱스의 원소들을 합산
+        return result
+
 563
+class Solution:
+    def findTilt(self, root: Optional[TreeNode]) -> int:
+        self.tilt_sum = 0
+        
+        def traverse(node):
+            if not node:
+                return 0
+            
+            left_sum = traverse(node.left)
+            right_sum = traverse(node.right)
+            
+            tilt = abs(left_sum - right_sum)
+            self.tilt_sum += tilt
+            
+            return node.val + left_sum + right_sum
+        
+        traverse(root)
+        
+        return self.tilt_sum
+
 566
+from typing import List
+
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        # Check if reshape is possible
+        m = len(mat)
+        n = len(mat[0]) if m > 0 else 0
+        
+        if m * n != r * c:
+            return mat
+        
+        # Initialize the new reshaped matrix
+        reshaped_matrix = [[0] * c for _ in range(r)]
+        
+        # Flatten the original matrix
+        flat_matrix = [element for row in mat for element in row]
+        
+        # Fill the reshaped matrix
+        index = 0
+        for i in range(r):
+            for j in range(c):
+                reshaped_matrix[i][j] = flat_matrix[index]
+                index += 1
+        
+        return reshaped_matrix
+
 572
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        # Helper function to check if two trees are identical
+        def is_identical(s, t):
+            if not s and not t:
+                return True
+            if not s or not t:
+                return False
+            return s.val == t.val and is_identical(s.left, t.left) and is_identical(s.right, t.right)
+        
+        # Base case: if subRoot is None, it's always considered a subtree
+        if not subRoot:
+            return True
+        
+        # Recursive function to find if subRoot is a subtree of root
+        def is_subtree_with_root(s, t):
+            if not s:
+                return False
+            return is_identical(s, t) or is_subtree_with_root(s.left, t) or is_subtree_with_root(s.right, t)
+        
+        return is_subtree_with_root(root, subRoot)
+
 575
+class Solution:
+    def distributeCandies(self, candyType: List[int]) -> int:
+        return min(len(set(candyType)), len(candyType) // 2)
+
 594
+from typing import List
+
+class Solution:
+    def findLHS(self, nums: List[int]) -> int:
+        frequency = {}
+        max_length = 0
+        
+        # Count frequencies of each number
+        for num in nums:
+            if num in frequency:
+                frequency[num] += 1
+            else:
+                frequency[num] = 1
+        
+        # Iterate through unique numbers in nums
+        for num in frequency:
+            if num + 1 in frequency:
+                current_length = frequency[num] + frequency[num + 1]
+                max_length = max(max_length, current_length)
+        
+        return max_length
+
 598
+from typing import List
+
+class Solution:
+    def maxCount(self, m: int, n: int, ops: List[List[int]]) -> int:
+        min_rows = m
+        min_cols = n
+        
+        for op in ops:
+            a, b = op
+            min_rows = min(min_rows, a)
+            min_cols = min(min_cols, b)
+        
+        return min_rows * min_cols
+
 599
+from typing import List
+
+class Solution:
+    def findRestaurant(self, list1: List[str], list2: List[str]) -> List[str]:
+        index_map = {}
+        min_index_sum = float('inf')
+        result = []
+        
+        # Store indices of restaurants in list1
+        for index, restaurant in enumerate(list1):
+            index_map[restaurant] = index
+        
+        # Find common restaurants and calculate index sum
+        for index, restaurant in enumerate(list2):
+            if restaurant in index_map:
+                current_index_sum = index + index_map[restaurant]
+                if current_index_sum < min_index_sum:
+                    min_index_sum = current_index_sum
+                    result = [restaurant]
+                elif current_index_sum == min_index_sum:
+                    result.append(restaurant)
+        
+        return result
+
 617
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root1:
+            return root2
+        if not root2:
+            return root1
+        
+        # Create a new node with the sum of values from root1 and root2
+        merged_root = TreeNode(root1.val + root2.val)
+        
+        # Recursively merge left and right subtrees
+        merged_root.left = self.mergeTrees(root1.left, root2.left)
+        merged_root.right = self.mergeTrees(root1.right, root2.right)
+        
+        return merged_root
+      
 628
+from typing import List
+
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        nums.sort()
+        return max(nums[-1] * nums[-2] * nums[-3], nums[0] * nums[1] * nums[-1])
+
 637
+from typing import List, Optional
+from collections import deque
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        if not root:
+            return []
+        
+        averages = []
+        queue = deque([root])
+        
+        while queue:
+            level_sum = 0
+            level_count = len(queue)
+            
+            for _ in range(level_count):
+                node = queue.popleft()
+                level_sum += node.val
+                
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            
+            averages.append(level_sum / level_count)
+        
+        return averages
+
 643
+from typing import List
+
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        max_sum = current_sum = sum(nums[:k])
+        
+        for i in range(k, len(nums)):
+            current_sum += nums[i] - nums[i - k]
+            if current_sum > max_sum:
+                max_sum = current_sum
+        
+        return max_sum / k
+
 645
+from typing import List
+
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        num_set = set()
+        duplicate = -1
+        n = len(nums)
+        actual_sum = sum(nums)
+        
+        for num in nums:
+            if num in num_set:
+                duplicate = num
+            num_set.add(num)
+        
+        expected_sum = n * (n + 1) // 2
+        missing = expected_sum - (actual_sum - duplicate)
+        
+        return [duplicate, missing]
+
 653
+from typing import Optional, Set
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+        def find(node, seen: Set[int]) -> bool:
+            if not node:
+                return False
+            if k - node.val in seen:
+                return True
+            seen.add(node.val)
+            return find(node.left, seen) or find(node.right, seen)
+        
+        return find(root, set())
+
 657
+class Solution:
+    def judgeCircle(self, moves: str) -> bool:
+        x, y = 0, 0
+
+        for move in moves:
+            if move == 'U':
+                y += 1
+            elif move == 'D':
+                y -= 1
+            elif move == 'L':
+                x -= 1
+            elif move == 'R':
+                x += 1
+
+        return x == 0 and y == 0
+        
 661
+from typing import List
+
+class Solution:
+    def imageSmoother(self, img: List[List[int]]) -> List[List[int]]:
+        rows = len(img)
+        cols = len(img[0])
+        
+        smoothed_img = [[0] * cols for _ in range(rows)]
+        
+        directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1), (1, 0), (1, 1)]
+        
+        for i in range(rows):
+            for j in range(cols):
+                sum_val = 0
+                count = 0
+                
+                for d in directions:
+                    ni, nj = i + d[0], j + d[1]
+                    if 0 <= ni < rows and 0 <= nj < cols:
+                        sum_val += img[ni][nj]
+                        count += 1
+                
+                smoothed_img[i][j] = sum_val // count
+        
+        return smoothed_img
+
 671
+from typing import Optional
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def findSecondMinimumValue(self, root: Optional[TreeNode]) -> int:
+        def dfs(node):
+            nonlocal first_min, second_min
+            
+            if not node:
+                return
+            
+            # Update first_min and second_min based on current node's value
+            if node.val < first_min:
+                second_min = first_min
+                first_min = node.val
+            elif first_min < node.val < second_min:
+                second_min = node.val
+            
+            # Recursively visit left and right children
+            dfs(node.left)
+            dfs(node.right)
+        
+        # Initialize first_min and second_min to infinity
+        first_min = float('inf')
+        second_min = float('inf')
+        
+        # Start DFS from the root
+        dfs(root)
+        
+        # If second_min is still infinity, it means no second minimum value found
+        return second_min if second_min != float('inf') else -1
+
 674
+from typing import List
+
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        
+        max_length = 1
+        current_length = 1
+        
+        for i in range(1, len(nums)):
+            if nums[i] > nums[i - 1]:
+                current_length += 1
+            else:
+                if current_length > max_length:
+                    max_length = current_length
+                current_length = 1
+        
+        if current_length > max_length:
+            max_length = current_length
+        
+        return max_length
+
 680
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        def is_palindrome(s, left, right):
+            while left < right:
+                if s[left] != s[right]:
+                    return False
+                left += 1
+                right -= 1
+            return True
+        
+        left, right = 0, len(s) - 1
+        
+        while left < right:
+            if s[left] != s[right]:
+                return is_palindrome(s, left + 1, right) or is_palindrome(s, left, right - 1)
+            left += 1
+            right -= 1
+        
+        return True
+
 682
 693
+class Solution:
+    def hasAlternatingBits(self, n: int) -> bool:
+        previous_bit = n & 0x1  # Get the least significant bit of n
+        n >>= 1  # Shift n to the right by 1 bit
+        
+        while n > 0:
+            current_bit = n & 0x1  # Get the least significant bit of n after shifting
+            if current_bit == previous_bit:
+                return False
+            previous_bit = current_bit
+            n >>= 1  # Shift n to the right by 1 bit
+        
+        return True
+
 696
+class Solution:
+    def countBinarySubstrings(self, s: str) -> int:
+        prev_length = 0
+        cur_length = 1
+        count = 0
+        
+        for i in range(1, len(s)):
+            if s[i] == s[i - 1]:
+                cur_length += 1
+            else:
+                count += min(prev_length, cur_length)
+                prev_length = cur_length
+                cur_length = 1
+        
+        count += min(prev_length, cur_length)
+        
+        return count
+
 697
+from collections import defaultdict
+
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        freq = defaultdict(int)
+        first_index = {}
+        degree = 0
+        min_length = len(nums)
+        
+        for i, num in enumerate(nums):
+            freq[num] += 1
+            if num not in first_index:
+                first_index[num] = i
+        
+        degree = max(freq.values())
+        
+        for num, count in freq.items():
+            if count == degree:
+                start = first_index[num]
+                end = len(nums) - nums[::-1].index(num) - 1
+                min_length = min(min_length, end - start + 1)
+        
+        return min_length
+
 700
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        # Base case: if root is None or we found the node
+        if root is None or root.val == val:
+            return root
+        
+        # Recursive cases
+        if val < root.val:
+            return self.searchBST(root.left, val)
+        else:
+            return self.searchBST(root.right, val)
+
 704
 709
+class Solution:
+    def toLowerCase(self, s: str) -> str:
+        return s.lower()
+
 717
+from typing import List
+
+class Solution:
+    def isOneBitCharacter(self, bits: List[int]) -> bool:
+        i = 0
+        while i < len(bits) - 1:
+            if bits[i] == 0:
+                i += 1  # Move one step forward for one-bit character
+            else:
+                i += 2  # Move two steps forward for two-bit character
+        
+        return i == len(bits) - 1
+
 724
+from typing import List
+
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        total_sum = sum(nums)
+        left_sum = 0
+        
+        for i in range(len(nums)):
+            right_sum = total_sum - left_sum - nums[i]
+            if left_sum == right_sum:
+                return i
+            left_sum += nums[i]
+        
+        return -1
+
 728
+from typing import List
+
+class Solution:
+    def selfDividingNumbers(self, left: int, right: int) -> List[int]:
+        def is_self_dividing(num):
+            for digit in str(num):
+                if digit == '0' or num % int(digit) != 0:
+                    return False
+            return True
+        
+        result = []
+        for num in range(left, right + 1):
+            if is_self_dividing(num):
+                result.append(num)
+        
+        return result
+
 733
+from typing import List
+
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
+        def fill(image, sr, sc, color, newColor):
+            if sr < 0 or sr >= len(image) or sc < 0 or sc >= len(image[0]) or image[sr][sc] != color:
+                return
+            image[sr][sc] = newColor
+            fill(image, sr + 1, sc, color, newColor)
+            fill(image, sr - 1, sc, color, newColor)
+            fill(image, sr, sc + 1, color, newColor)
+            fill(image, sr, sc - 1, color, newColor)
+        
+        if image[sr][sc] == newColor:
+            return image
+        
+        fill(image, sr, sc, image[sr][sc], newColor)
+        
+        return image
+
 744
+from typing import List
+
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        low, high = 0, len(letters) - 1
+        
+        while low <= high:
+            mid = (low + high) // 2
+            if letters[mid] <= target:
+                low = mid + 1
+            else:
+                high = mid - 1
+        
+        # After the loop, low is the index of the smallest element greater than target
+        return letters[low % len(letters)]
+
 746
+from typing import List
+
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        if n == 0:
+            return 0
+        if n == 1:
+            return cost[0]
+        
+        dp = [0] * n
+        dp[0] = cost[0]
+        dp[1] = cost[1]
+        
+        for i in range(2, n):
+            dp[i] = cost[i] + min(dp[i-1], dp[i-2])
+        
+        return min(dp[n-1], dp[n-2])
+
 747
+from typing import List
+
+class Solution:
+    def dominantIndex(self, nums: List[int]) -> int:
+        max_num = -1
+        max_idx = -1
+        second_max = -1
+        
+        # Find the maximum and second maximum
+        for i in range(len(nums)):
+            if nums[i] > max_num:
+                second_max = max_num
+                max_num = nums[i]
+                max_idx = i
+            elif nums[i] > second_max:
+                second_max = nums[i]
+        
+        # Check if max_num is at least twice as large as every other number
+        for num in nums:
+            if num != max_num and max_num < 2 * num:
+                return -1
+        
+        return max_idx
+
 748
+from typing import List
+import collections
+
+class Solution:
+    def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
+        # Normalize licensePlate
+        licensePlate = licensePlate.lower()
+        license_count = collections.Counter(c for c in licensePlate if c.isalpha())
+        
+        shortest_word = None
+        min_length = float('inf')
+        
+        for word in words:
+            word_count = collections.Counter(word)
+            if all(word_count[char] >= license_count[char] for char in license_count):
+                if len(word) < min_length:
+                    shortest_word = word
+                    min_length = len(word)
+        
+        return shortest_word
+
 762
+class Solution:
+    def countPrimeSetBits(self, left: int, right: int) -> int:
+        def is_prime(n):
+            if n <= 1:
+                return False
+            if n <= 3:
+                return True
+            if n % 2 == 0 or n % 3 == 0:
+                return False
+            i = 5
+            while i * i <= n:
+                if n % i == 0 or n % (i + 2) == 0:
+                    return False
+                i += 6
+            return True
+        
+        # Set of prime numbers up to 20 (max bits for right=10^6)
+        prime_set = set([2, 3, 5, 7, 11, 13, 17, 19])
+        
+        count = 0
+        for num in range(left, right + 1):
+            bit_count = bin(num).count('1')
+            if bit_count in prime_set:
+                count += 1
+        
+        return count
+
 766
+from typing import List
+
+class Solution:
+    def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        # Check each element against its bottom-right neighbor
+        for i in range(rows - 1):
+            for j in range(cols - 1):
+                if matrix[i][j] != matrix[i + 1][j + 1]:
+                    return False
+        
+        return True
+
 771
+class Solution:
+    def numJewelsInStones(self, jewels: str, stones: str) -> int:
+        jewels_set = set(jewels)
+        count = 0
+        
+        for stone in stones:
+            if stone in jewels_set:
+                count += 1
+        
+        return count
+
+
 783
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def minDiffInBST(self, root: TreeNode) -> int:
+        self.prev = None
+        self.min_diff = float('inf')
+        
+        def inorder(node):
+            if node is None:
+                return
+            
+            inorder(node.left)
+            
+            if self.prev is not None:
+                self.min_diff = min(self.min_diff, node.val - self.prev)
+            
+            self.prev = node.val
+            
+            inorder(node.right)
+        
+        inorder(root)
+        
+        return self.min_diff
+
 796
+from typing import List
+import math
+
+class Solution:
+    def constructRectangle(self, area: int) -> List[int]:
+        w = int(math.sqrt(area))
+        while area % w != 0:
+            w -= 1
+        l = area // w
+        return [l, w]
+
 804
+class Solution:
+    def uniqueMorseRepresentations(self, words: List[str]) -> int:
+        morse_mapping = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", 
+                         "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", 
+                         "..-", "...-", ".--", "-..-", "-.--", "--.."]
+        
+        unique_codes = set()
+        
+        for word in words:
+            morse_code = []
+            for char in word:
+                morse_code.append(morse_mapping[ord(char) - ord('a')])
+            morse_representation = ''.join(morse_code)
+            unique_codes.add(morse_representation)
+        
+        return len(unique_codes)
 806
+class Solution:
+    def numberOfLines(self, widths: List[int], s: str) -> List[int]:
+        lines_used = 1
+        current_width = 0
+        
+        for char in s:
+            width = widths[ord(char) - ord('a')]
+            if current_width + width > 100:
+                lines_used += 1
+                current_width = width
+            else:
+                current_width += width
+        
+        return [lines_used, current_width]
+
 812
+class Solution:
+    def largestTriangleArea(self, points: List[List[int]]) -> float:
+        def triangle_area(p1, p2, p3):
+            x1, y1 = p1
+            x2, y2 = p2
+            x3, y3 = p3
+            return 0.5 * abs(x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2))
+        
+        n = len(points)
+        max_area = 0.0
+        
+        for i in range(n):
+            for j in range(i + 1, n):
+                for k in range(j + 1, n):
+                    p1 = points[i]
+                    p2 = points[j]
+                    p3 = points[k]
+                    area = triangle_area(p1, p2, p3)
+                    max_area = max(max_area, area)
+        
+        return max_area
+
 819
+import re
+from collections import Counter
+
+class Solution:
+    def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
+        normalized_paragraph = re.sub(r'[^\w\s]', ' ', paragraph.lower())
+        words = normalized_paragraph.split()
+        words = [word for word in words if word not in set(banned)]
+        word_count = Counter(words)
+        
+        most_common_word = ''
+        max_frequency = 0
+        for word, freq in word_count.items():
+            if freq > max_frequency:
+                most_common_word = word
+                max_frequency = freq
+        
+        return most_common_word
+
 821
+class Solution:
+    def shortestToChar(self, s: str, c: str) -> List[int]:
+        n = len(s)
+        positions = []
+        
+        for i in range(n):
+            if s[i] == c:
+                positions.append(i)
+        
+        distances = [0] * n
+        for i in range(n):
+            if s[i] != c:
+                distances[i] = min(abs(i - pos) for pos in positions)
+        
+        return distances
+
 824
+class Solution:
+    def toGoatLatin(self, sentence: str) -> str:
+        vowels = set('aeiouAEIOU')
+        words = sentence.split()
+        result = []
+        
+        for i, word in enumerate(words, start=1):
+            if word[0] in vowels:
+                goat_word = word + 'ma'
+            else:
+                goat_word = word[1:] + word[0] + 'ma'
+                
+            goat_word += 'a' * i
+            result.append(goat_word)
+        
+        return ' '.join(result)
+
 830
+class Solution:
+    def largeGroupPositions(self, s: str) -> List[List[int]]:
+        n = len(s)
+        result = []
+        start = 0
+        
+        for i in range(1, n):
+            if s[i] != s[i - 1]:
+                if i - start >= 3:
+                    result.append([start, i - 1])
+                start = i
+        
+        # Check the last group if it extends to the end of the string
+        if n - start >= 3:
+            result.append([start, n - 1])
+        
+        return result
+
 832
 836
+class Solution:
+    def isRectangleOverlap(self, rec1: List[int], rec2: List[int]) -> bool:
+        x1, y1, x2, y2 = rec1
+        x3, y3, x4, y4 = rec2
+        
+        if x2 <= x3 or x1 >= x4 or y2 <= y3 or y1 >= y4:
+            return False
+        else:
+            return True
+
 844
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        def process_string(s):
+            result_list = []
+            for char in s:
+                if char != '#':
+                    result_list.append(char)
+                elif result_list:
+                    result_list.pop()
+            return ''.join(result_list)
+        
+        return process_string(s) == process_string(t)
+
 859
+class Solution:
+    def buddyStrings(self, s: str, goal: str) -> bool:
+        if len(s) != len(goal):
+            return False
+        
+        if s == goal:
+            seen = set()
+            for char in s:
+                if char in seen:
+                    return True
+                seen.add(char)
+            return False
+        
+        mismatch_indices = []
+        for i in range(len(s)):
+            if s[i] != goal[i]:
+                mismatch_indices.append(i)
+        
+        if len(mismatch_indices) != 2:
+            return False
+        
+        i, j = mismatch_indices
+        return s[i] == goal[j] and s[j] == goal[i]
+
 860
+class Solution:
+    def lemonadeChange(self, bills: List[int]) -> bool:
+        five_count = 0
+        ten_count = 0
+        
+        for bill in bills:
+            if bill == 5:
+                five_count += 1
+            elif bill == 10:
+                if five_count > 0:
+                    five_count -= 1
+                    ten_count += 1
+                else:
+                    return False
+            elif bill == 20:
+                if ten_count > 0 and five_count > 0:
+                    ten_count -= 1
+                    five_count -= 1
+                elif five_count >= 3:
+                    five_count -= 3
+                else:
+                    return False
+        
+        return True
+
 867
+class Solution:
+    def transpose(self, matrix: List[List[int]]) -> List[List[int]]:
+        m = len(matrix)      # number of rows in original matrix
+        n = len(matrix[0])   # number of columns in original matrix
+        
+        # Initialize the transpose matrix with dimensions n x m
+        result = [[0] * m for _ in range(n)]
+        
+        # Fill the transpose matrix
+        for i in range(m):
+            for j in range(n):
+                result[j][i] = matrix[i][j]
+        
+        return result
+
 868
+class Solution:
+    def binaryGap(self, n: int) -> int:
+        binary_str = bin(n)[2:]
+        
+        max_gap = 0
+        current_gap = 0
+        found_one = False
+        
+        for char in binary_str:
+            if char == '1':
+                if not found_one:
+                    found_one = True
+                else:
+                    max_gap = max(max_gap, current_gap)
+                current_gap = 1
+            elif found_one:
+                current_gap += 1
+        
+        return max_gap
 872
+class Solution:
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        def get_leaf_sequence(root: Optional[TreeNode]) -> List[int]:
+            result = []
+            stack = [root]
+            
+            while stack:
+                node = stack.pop()
+                if node:
+                    if not node.left and not node.right:
+                        result.append(node.val)
+                    else:
+                        stack.append(node.right)
+                        stack.append(node.left)
+            
+            return result
+        
+        return get_leaf_sequence(root1) == get_leaf_sequence(root2)
+
 876
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+        
+        slow = head
+        fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        return slow
+
 883
+class Solution:
+    def projectionArea(self, grid: List[List[int]]) -> int:
+        xy_area = sum(1 for row in grid for cell in row if cell > 0)
+        xz_area = sum(max(row) for row in grid)
+        yz_area = sum(max(row[i] for row in grid) for i in range(len(grid[0])))
+        
+        return xy_area + xz_area + yz_area
+
 884
+class Solution:
+    def uncommonFromSentences(self, s1: str, s2: str) -> List[str]:
+        word_count = {}
+        
+        # Split sentences into words and count occurrences
+        words1 = s1.split()
+        words2 = s2.split()
+        
+        for word in words1:
+            if word in word_count:
+                word_count[word] += 1
+            else:
+                word_count[word] = 1
+        
+        for word in words2:
+            if word in word_count:
+                word_count[word] += 1
+            else:
+                word_count[word] = 1
+        
+        # Find uncommon words (words that appear exactly once)
+        uncommon_words = []
+        for word, count in word_count.items():
+            if count == 1:
+                uncommon_words.append(word)
+        
+        return uncommon_words
+
 888
+class Solution:
+    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+        sum_Alice = sum(aliceSizes)
+        sum_Bob = sum(bobSizes)
+        
+        set_Bob = set(bobSizes)
+        
+        target_diff = (sum_Alice - sum_Bob) // 2
+        
+        for x in aliceSizes:
+            y = x - target_diff
+            if y in set_Bob:
+                return [x, y]
+
 896
 897
+class Solution:
+    def increasingBST(self, root: TreeNode) -> TreeNode:
+        def inorder(node):
+            nonlocal current
+            
+            if not node:
+                return
+            
+            inorder(node.left)
+            
+            # Process current node
+            node.left = None
+            current.right = node
+            current = node
+            
+            inorder(node.right)
+        
+        # Create a dummy node to hold the head of the new tree
+        dummy = TreeNode(-1)
+        current = dummy
+        
+        inorder(root)
+        
+        # Return the right child of dummy, which is the head of the new tree
+        return dummy.right
+
 905
+class Solution:
+    def sortArrayByParity(self, nums: List[int]) -> List[int]:
+        left, right = 0, len(nums) - 1
+        
+        while left < right:
+            if nums[left] % 2 != 0:  # nums[left] is odd
+                if nums[right] % 2 == 0:  # nums[right] is even
+                    # Swap nums[left] and nums[right]
+                    nums[left], nums[right] = nums[right], nums[left]
+                right -= 1
+            else:
+                left += 1
+        
+        return nums
+
 908
 class Solution:
     def smallestRangeI(self, nums: List[int], k: int) -> int:
