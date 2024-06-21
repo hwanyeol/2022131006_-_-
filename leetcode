@@ -1,3 +1,200 @@
+1
+class Solution:
+    def setdata(self,first,second):
+        n=len(first)
+        for i in range(n):
+            for j in range(i+1,n+1):
+                if first[i]+first[j]==second:
+                    return print([i,j])
+        
+a=Solution()
+a.setdata([2,7,11,15],9)
+2
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        self.l1=l1
+        self.l2=l2
+        a=0
+        b=[]
+        for i in range(len(l1)):
+            a=l1[i]*10^i+a
+        for i in range(len(l2)):
+            a=a+l2[i]*10^i
+        for i in range(len(str(a))):
+            b.append(a%10)
+            a=a//10
+        return b
+c=Solution()
+print(c.addTwoNumbers([2,4,3],[5,6,4]))
+17
+from typing import List
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        
+        # Mapping of digits to corresponding letters
+        digit_to_char = {
+            '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+            '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+        }
+        
+        # Helper function to perform backtracking
+        def backtrack(index: int, path: str):
+            # If the path is complete, add it to the results
+            if index == len(digits):
+                combinations.append(path)
+                return
+            
+            # Get the letters that the current digit can represent
+            possible_letters = digit_to_char[digits[index]]
+            
+            # Iterate over these letters and recurse
+            for letter in possible_letters:
+                backtrack(index + 1, path + letter)
+        
+        # List to hold the combinations
+        combinations = []
+        # Start the backtracking process from the first digit
+        backtrack(0, "")
+        
+        return combinations
+
+167
+from typing import List
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        left, right = 0, len(numbers) - 1
+        
+        while left < right:
+            current_sum = numbers[left] + numbers[right]
+            
+            if current_sum == target:
+                return [left + 1, right + 1]
+            elif current_sum < target:
+                left += 1
+            else:
+                right -= 1
+        
+        return []  # If no solution is found
+
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        translations = {
+            "I": 1,
+            "V": 5,
+            "X": 10,
+            "L": 50,
+            "C": 100,
+            "D": 500,
+            "M": 1000
+        }
+        number = 0
+        s = s.replace("IV", "IIII").replace("IX", "VIIII")
+        s = s.replace("XL", "XXXX").replace("XC", "LXXXX")
+        s = s.replace("CD", "CCCC").replace("CM", "DCCCC")
+        for char in s:
+            number += translations[char]
+        return number
+
+136
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        seen_once = set()
+        seen_twice = set()
+    
+        for num in nums:
+            if num in seen_once:
+                seen_once.remove(num)
+                seen_twice.add(num)
+            else:
+                seen_once.add(num)
+    
+        return seen_once.pop()
+
+202
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        seen = set()  
+        while n != 1:
+            if n in seen:  # 이미 본 숫자를 만나면, 순환에 빠진 것
+                return False
+            seen.add(n)
+            n = sum(int(digit) ** 2 for digit in str(n))  
+        return True 
+
+58
+class Solution:
+    def lengthOfLastWord(self, s: str) -> int:
+        a=s.split()
+        return len(a[-1])
+169
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+        m = defaultdict(int)
+        
+        for num in nums:
+            m[num] += 1
+        
+        n = n // 2
+        for key, value in m.items():
+            if value > n:
+                return key
+        
+        return 0
+1221
+class Solution:
+    def balancedStringSplit(self, s: str) -> int:
+        a=0
+        b=0
+        c=0
+        for i in s:
+            if i=='L':
+                a=a+1
+            else:
+                b=b+1
+            if a==b:
+                c=c+1
+        return c
+
+
+88
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        nums1[m:] = nums2
+        nums1.sort()
+        for i in range(len(nums1)-m-n):
+            nums1.pop(0)
+509
+class Solution:
+    def fib(self, n: int) -> int:
+        def f(a):
+            if a==0:
+                return 0
+            if a==1:
+                return 1
+            else:
+                return f(a-1)+f(a-2)
+
+        return f(n)
+118
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        triangle = []
+        for i in range(numRows):
+            row = [1] * (i + 1)  
+            for j in range(1, i):
+                row[j] = triangle[i - 1][j - 1] + triangle[i - 1][j]
+            triangle.append(row)
+        return triangle
+            
+            
 26
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
@@ -101,34 +298,7 @@ class Solution:
         
         return True
 
-1
-class Solution:
-    def setdata(self,first,second):
-        n=len(first)
-        for i in range(n):
-            for j in range(i+1,n+1):
-                if first[i]+first[j]==second:
-                    return print([i,j])
-        
-a=Solution()
-a.setdata([2,7,11,15],9)
-2
-class Solution:
-    def addTwoNumbers(self, l1, l2):
-        self.l1=l1
-        self.l2=l2
-        a=0
-        b=[]
-        for i in range(len(l1)):
-            a=l1[i]*10^i+a
-        for i in range(len(l2)):
-            a=a+l2[i]*10^i
-        for i in range(len(str(a))):
-            b.append(a%10)
-            a=a//10
-        return b
-c=Solution()
-print(c.addTwoNumbers([2,4,3],[5,6,4]))
+
 367
 class Solution:
     def isPerfectSquare(self, num: int) -> bool:
