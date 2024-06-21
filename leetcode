@@ -1,0 +1,619 @@
+1
+class Solution:
+    def setdata(self,first,second):
+        n=len(first)
+        for i in range(n):
+            for j in range(i+1,n+1):
+                if first[i]+first[j]==second:
+                    return print([i,j])
+        
+a=Solution()
+a.setdata([2,7,11,15],9)
+2
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        self.l1=l1
+        self.l2=l2
+        a=0
+        b=[]
+        for i in range(len(l1)):
+            a=l1[i]*10^i+a
+        for i in range(len(l2)):
+            a=a+l2[i]*10^i
+        for i in range(len(str(a))):
+            b.append(a%10)
+            a=a//10
+        return b
+c=Solution()
+print(c.addTwoNumbers([2,4,3],[5,6,4]))
+9
+13
+14
+20
+21
+26
+27
+28
+55
+67
+69
+83
+88
+100
+101
+118
+121
+125
+160
+168
+169
+171
+191
+202
+203
+217
+228
+231
+257
+263
+268
+283
+290
+292
+326
+342
+344
+345
+349
+350
+367
+383
+389
+392
+401
+405
+409
+412
+415
+434
+441
+448
+455
+459
+461
+463
+482
+485
+492
+495
+496
+500
+501
+504
+506
+507
+509
+520
+521
+530
+541
+543
+551
+557
+561
+563
+566
+572
+575
+594
+598
+599
+617
+628
+637
+643
+645
+653
+657
+661
+671
+674
+680
+682
+693
+696
+697
+700
+704
+709
+717
+724
+728
+733
+744
+746
+747
+748
+762
+766
+771
+783
+796
+804
+806
+812
+819
+821
+824
+830
+832
+836
+844
+859
+860
+867
+868
+872
+876
+883
+884
+888
+896
+897
+905
+908
+914
+917
+922
+925
+929
+938
+941
+942
+944
+953
+961
+965
+976
+977
+989
+993
+997
+999
+1108
+1122
+1128
+1137
+1154
+1175
+1184
+1185
+1189
+1200
+from typing import List
+
+class Solution:
+    def minimumAbsDifference(self, arr: List[int]) -> List[List[int]]:
+        arr.sort()
+        min_abs_diff = float('inf')
+        result = []
+        
+        for i in range(1, len(arr)):
+            abs_diff = arr[i] - arr[i - 1]
+            
+            if abs_diff < min_abs_diff:
+                min_abs_diff = abs_diff
+                result = [[arr[i - 1], arr[i]]]
+            elif abs_diff == min_abs_diff:
+                result.append([arr[i - 1], arr[i]])
+        
+        return result
+
+1207
+from typing import List
+
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        count_map = {}
+        for num in arr:
+            if num in count_map:
+                count_map[num] += 1
+            else:
+                count_map[num] = 1
+        
+        occurrence_counts = count_map.values()
+        return len(occurrence_counts) == len(set(occurrence_counts))
+
+1217
+from typing import List
+
+class Solution:
+    def minCostToMoveChips(self, position: List[int]) -> int:
+        even_count = sum(1 for pos in position if pos % 2 == 0)
+        odd_count = len(position) - even_count
+        
+        return min(even_count, odd_count)
+
+1221
+1287
+1309
+class Solution:
+    def freqAlphabets(self, s: str) -> str:
+        result = []
+        i = 0
+        while i < len(s):
+            if i + 2 < len(s) and s[i + 2] == '#':
+                # Decode two-digit number
+                num = int(s[i:i + 2])
+                result.append(chr(ord('a') + num - 1))
+                i += 3
+            else:
+                # Decode single-digit number
+                num = int(s[i])
+                result.append(chr(ord('a') + num - 1))
+                i += 1
+        
+        return ''.join(result)
+
+1313
+1317
+from typing import List
+
+class Solution:
+    def getNoZeroIntegers(self, n: int) -> List[int]:
+        def contains_zero_digit(num):
+            return '0' in str(num)
+        
+        for i in range(1, n):
+            if not contains_zero_digit(i) and not contains_zero_digit(n - i):
+                return [i, n - i]
+        
+        return []
+1323
+class Solution:
+    def maximum69Number (self, num: int) -> int:
+        num_str = str(num)
+        for i in range(len(num_str)):
+            if num_str[i] == '6':
+                num_str = num_str[:i] + '9' + num_str[i+1:]
+                break
+        return int(num_str)
+
+1331
+1332
+class Solution:
+    def removePalindromeSub(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        if s == s[::-1]:
+            return 1
+        
+        return 2
+
+1337
+from typing import List
+
+class Solution:
+    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+        # Calculate the strength (number of 1s) for each row
+        row_strength = []
+        for i in range(len(mat)):
+            strength = sum(mat[i])
+            row_strength.append((i, strength))
+        
+        # Sort rows by strength (number of 1s)
+        row_strength.sort(key=lambda x: x[1])
+        
+        # Extract indices of the k weakest rows
+        result = [row_strength[i][0] for i in range(k)]
+        
+        return result
+
+1342
+class Solution:
+    def numberOfSteps(self, num: int) -> int:
+        steps = 0
+        while num > 0:
+            if num % 2 == 0:
+                num //= 2
+            else:
+                num -= 1
+            steps += 1
+        return steps
+
+1346
+from typing import List
+
+class Solution:
+    def checkIfExist(self, arr: List[int]) -> bool:
+        seen = set()
+        for num in arr:
+            if 2 * num in seen or (num % 2 == 0 and num // 2 in seen):
+                return True
+            seen.add(num)
+        return False
+
+1356
+from typing import List
+
+class Solution:
+    def sortByBits(self, arr: List[int]) -> List[int]:
+        def count_ones(num):
+            return bin(num).count('1')
+        
+        # Sort by number of 1's in binary representation, then by the number itself
+        return sorted(arr, key=lambda x: (count_ones(x), x))
+
+1360
+1365
+from typing import List
+
+class Solution:
+    def smallerNumbersThanCurrent(self, nums: List[int]) -> List[int]:
+        # Create a copy of nums and sort it
+        sorted_nums = sorted(nums)
+        
+        # Create a dictionary to store the count of smaller numbers for each unique number
+        count_smaller = {}
+        for i, num in enumerate(sorted_nums):
+            if num not in count_smaller:
+                count_smaller[num] = i
+        
+        # Generate the result array based on the dictionary
+        result = []
+        for num in nums:
+            result.append(count_smaller[num])
+        
+        return result
+
+1374
+class Solution:
+    def generateTheString(self, n: int) -> str:
+        if n % 2 == 1:
+            return 'a' * n
+        else:
+            return 'a' * (n - 1) + 'b'
+
+1379
+class Solution:
+    def getTargetCopy(self, original: TreeNode, cloned: TreeNode, target: TreeNode) -> TreeNode:
+        def dfs(node_original, node_cloned):
+            if node_original is None:
+                return None
+            if node_original == target:
+                return node_cloned
+            left_result = dfs(node_original.left, node_cloned.left)
+            if left_result:
+                return left_result
+            return dfs(node_original.right, node_cloned.right)
+        
+        return dfs(original, cloned)
+
+1380
+from typing import List
+
+class Solution:
+    def luckyNumbers (self, matrix: List[List[int]]) -> List[int]:
+        # Initialize lists to store minimums of rows and maximums of columns
+        min_rows = [min(row) for row in matrix]
+        max_cols = [max(matrix[i][j] for i in range(len(matrix))) for j in range(len(matrix[0]))]
+        
+        # Find the intersection of minimum rows and maximum columns
+        lucky_numbers = [matrix[i][j] for i in range(len(matrix)) for j in range(len(matrix[0])) 
+                         if matrix[i][j] == min_rows[i] and matrix[i][j] == max_cols[j]]
+        
+        return lucky_numbers
+
+1385
+from typing import List
+
+class Solution:
+    def findTheDistanceValue(self, arr1: List[int], arr2: List[int], d: int) -> int:
+        count = 0
+        for x in arr1:
+            valid = True
+            for y in arr2:
+                if abs(x - y) <= d:
+                    valid = False
+                    break
+            if valid:
+                count += 1
+        return count
+
+1389
+class Solution:
+    def createTargetArray(self, nums: List[int], index: List[int]) -> List[int]:
+        target = []
+        for num, idx in zip(nums, index):
+            target.insert(idx, num)
+        return target
+
+1394
+from typing import List
+
+class Solution:
+    def findLucky(self, arr: List[int]) -> int:
+        frequency = {}
+        
+        # Count frequencies of each number in arr
+        for num in arr:
+            if num in frequency:
+                frequency[num] += 1
+            else:
+                frequency[num] = 1
+        
+        # Initialize the maximum lucky number found
+        max_lucky = -1
+        
+        # Find the maximum number where number equals its frequency
+        for num, count in frequency.items():
+            if num == count:
+                max_lucky = max(max_lucky, num)
+        
+        return max_lucky
+1399
+class Solution:
+    def countLargestGroup(self, n: int) -> int:
+        # Helper function to calculate digit sum
+        def digit_sum(num):
+            return sum(int(digit) for digit in str(num))
+        
+        # Dictionary to store sum of digits -> count of numbers
+        digit_sum_count = {}
+        
+        # Iterate over each number from 1 to n
+        for num in range(1, n + 1):
+            sum_digits = digit_sum(num)
+            if sum_digits in digit_sum_count:
+                digit_sum_count[sum_digits] += 1
+            else:
+                digit_sum_count[sum_digits] = 1
+        
+        # Find the largest sum of digits
+        max_sum = max(digit_sum_count.values())
+        
+        # Count how many times the largest sum appears
+        largest_group_count = sum(1 for count in digit_sum_count.values() if count == max_sum)
+        
+        return largest_group_count
+
+1403
+from typing import List
+
+class Solution:
+    def minSubsequence(self, nums: List[int]) -> List[int]:
+        total_sum = sum(nums)
+        nums.sort(reverse=True)
+        subsequence = []
+        subsequence_sum = 0
+        
+        for num in nums:
+            subsequence.append(num)
+            subsequence_sum += num
+            if subsequence_sum > total_sum / 2:
+                break
+        
+        return subsequence
+
+1408
+from typing import List
+
+class Solution:
+    def stringMatching(self, words: List[str]) -> List[str]:
+        result = []
+        
+        for i in range(len(words)):
+            word1 = words[i]
+            for j in range(len(words)):
+                word2 = words[j]
+                if i != j and word1 in word2 and word1 not in result:
+                    result.append(word1)
+        
+        return result
+
+1413
+from typing import List
+
+class Solution:
+    def minStartValue(self, nums: List[int]) -> int:
+        min_start_value = 1
+        current_sum = 0
+        
+        for num in nums:
+            current_sum += num
+            min_start_value = max(min_start_value, 1 - current_sum)
+        
+        return min_start_value
+
+1417
+class Solution:
+  def reformat(self, s: str) -> str:
+        digits = [ch for ch in s if ch.isdigit()]
+        letters = [ch for ch in s if ch.isalpha()]
+        
+        if abs(len(digits) - len(letters)) > 1:
+            return ""
+        
+        result = []
+        if len(digits) >= len(letters):
+            for i in range(len(letters)):
+                result.append(digits[i])
+                result.append(letters[i])
+            if len(digits) > len(letters):
+                result.append(digits[-1])
+        else:
+            for i in range(len(digits)):
+                result.append(letters[i])
+                result.append(digits[i])
+            if len(letters) > len(digits):
+                result.append(letters[-1])
+        
+        return ''.join(result)
+
+1422
+class Solution:
+    def maxScore(self, s: str) -> int:
+        count_zeros = 0
+        count_ones = s.count('1')  # Count total '1's in the string
+        max_score = 0
+        
+        # Traverse through the string, excluding the last character
+        for i in range(len(s) - 1):
+            if s[i] == '0':
+                count_zeros += 1
+            else:
+                count_ones -= 1
+            
+            # Calculate current score
+            current_score = count_zeros + count_ones
+            max_score = max(max_score, current_score)
+        
+        return max_score
+
+1431
+1436
+from typing import List
+
+class Solution:
+    def destCity(self, paths: List[List[str]]) -> str:
+        start_cities = set()
+        dest_cities = set()
+        
+        # Collect all start and destination cities in sets
+        for path in paths:
+            start_cities.add(path[0])
+            dest_cities.add(path[1])
+        
+        # Find the destination city that is not in start_cities
+        for city in dest_cities:
+            if city not in start_cities:
+                return city
+        
+        return ""
+
+1446
+class Solution:
+    def maxPower(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        max_power = 1
+        current_power = 1
+        
+        for i in range(1, len(s)):
+            if s[i] == s[i - 1]:
+                current_power += 1
+            else:
+                max_power = max(max_power, current_power)
+                current_power = 1
+        
+        # Update max_power after the loop in case the longest sequence ends at the end of the string
+        max_power = max(max_power, current_power)
+        
+        return max_power
+
+4550
+1768
+1935
+
