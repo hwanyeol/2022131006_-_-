@@ -162,33 +162,540 @@ print(c.addTwoNumbers([2,4,3],[5,6,4]))
 897
 905
 908
+class Solution:
+    def smallestRangeI(self, nums: List[int], k: int) -> int:
+        min_num = min(nums)
+        max_num = max(nums)
+        
+        min_possible_range = max_num - k - (min_num + k)
+        
+        return max(0, min_possible_range)
+
 914
+from collections import Counter
+from math import gcd
+from functools import reduce
+
+class Solution:
+    def hasGroupsSizeX(self, deck: List[int]) -> bool:
+        count = Counter(deck)
+        values = list(count.values())
+        
+        def find_gcd(a, b):
+            return gcd(a, b)
+        
+        gcd_value = reduce(find_gcd, values)
+        
+        return gcd_value > 1
+
 917
+class Solution:
+    def reverseOnlyLetters(self, s: str) -> str:
+        s_list = list(s)
+        left, right = 0, len(s) - 1
+        
+        while left < right:
+            if s_list[left].isalpha() and s_list[right].isalpha():
+                # Swap characters
+                s_list[left], s_list[right] = s_list[right], s_list[left]
+                left += 1
+                right -= 1
+            elif not s_list[left].isalpha():
+                left += 1
+            elif not s_list[right].isalpha():
+                right -= 1
+        
+        return ''.join(s_list)
+
 922
+class Solution:
+    def sortArrayByParityII(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        even_index, odd_index = 0, 1
+        
+        while even_index < n and odd_index < n:
+            if nums[even_index] % 2 == 0:
+                even_index += 2
+            elif nums[odd_index] % 2 == 1:
+                odd_index += 2
+            else:
+                # Swap nums[even_index] and nums[odd_index]
+                nums[even_index], nums[odd_index] = nums[odd_index], nums[even_index]
+                even_index += 2
+                odd_index += 2
+        
+        return nums
+
 925
+class Solution:
+    def isLongPressedName(self, name: str, typed: str) -> bool:
+        i, j = 0, 0
+        n, m = len(name), len(typed)
+        
+        while j < m:
+            if i < n and name[i] == typed[j]:
+                i += 1
+                j += 1
+            elif j > 0 and typed[j] == typed[j-1]:
+                j += 1
+            else:
+                return False
+        
+        return i == n
+
 929
+class Solution:
+    def numUniqueEmails(self, emails: List[str]) -> int:
+        unique_emails = set()
+        
+        for email in emails:
+            local_name, domain_name = email.split('@')
+            
+            # Normalize local name
+            local_name = local_name.split('+')[0]  # Ignore everything after '+'
+            local_name = local_name.replace('.', '')  # Remove all '.'
+            
+            # Construct normalized email
+            normalized_email = local_name + '@' + domain_name
+            
+            # Add to set to ensure uniqueness
+            unique_emails.add(normalized_email)
+        
+        return len(unique_emails)
+
 938
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        def dfs(node, low, high):
+            if not node:
+                return 0
+            
+            if node.val < low:
+                return dfs(node.right, low, high)
+            elif node.val > high:
+                return dfs(node.left, low, high)
+            else:
+                return node.val + dfs(node.left, low, high) + dfs(node.right, low, high)
+        
+        return dfs(root, low, high)
+
 941
+class Solution:
+    def validMountainArray(self, arr: List[int]) -> bool:
+        n = len(arr)
+        
+        if n < 3:
+            return False
+        
+        peak_index = arr.index(max(arr))
+        
+        if peak_index == 0 or peak_index == n - 1:
+            return False
+        
 942
+class Solution:
+    def diStringMatch(self, s: str) -> List[int]:
+        n = len(s)
+        low, high = 0, n
+        result = []
+        
+        for char in s:
+            if char == 'I':
+                result.append(low)
+                low += 1
+            elif char == 'D':
+                result.append(high)
+                high -= 1
+        
+        # Append the last remaining number
+        result.append(low)
+        
+        return result
+
 944
 953
+class Solution:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        order_map = {char: idx for idx, char in enumerate(order)}
+        
+        def is_sorted(w1, w2):
+            for c1, c2 in zip(w1, w2):
+                if order_map[c1] > order_map[c2]:
+                    return False
+                elif order_map[c1] < order_map[c2]:
+                    break
+            else:
+                return len(w1) <= len(w2)
+            return True
+        
+        for i in range(len(words) - 1):
+            if not is_sorted(words[i], words[i + 1]):
+                return False
+        
+        return True
+
 961
+class Solution:
+    def repeatedNTimes(self, nums: List[int]) -> int:
+        N = len(nums) // 2
+        freq_map = {}
+        
+        for num in nums:
+            if num in freq_map:
+                freq_map[num] += 1
+                if freq_map[num] == N:
+                    return num
+            else:
+                freq_map[num] = 1
+
 965
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        def is_unival(node, value):
+            if not node:
+                return True
+            if node.val != value:
+                return False
+            return is_unival(node.left, value) and is_unival(node.right, value)
+        
+        if not root:
+            return True
+        return is_unival(root, root.val)
+
 976
+class Solution:
+    def largestPerimeter(self, nums: List[int]) -> int:
+        nums.sort(reverse=True)
+        
+        for i in range(len(nums) - 2):
+            if nums[i] < nums[i + 1] + nums[i + 2]:
+                return nums[i] + nums[i + 1] + nums[i + 2]
+        
+        return 0
+
 977
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        result = [0] * n
+        left, right = 0, n - 1
+        idx = n - 1
+        
+        while left <= right:
+            left_square = nums[left] ** 2
+            right_square = nums[right] ** 2
+            
+            if left_square > right_square:
+                result[idx] = left_square
+                left += 1
+            else:
+                result[idx] = right_square
+                right -= 1
+            idx -= 1
+        
+        return result
+
 989
+class Solution:
+    def addToArrayForm(self, num: List[int], k: int) -> List[int]:
+        result = []
+        carry = 0
+        
+        while num or k > 0:
+            if num:
+                digit = num.pop()
+            else:
+                digit = 0
+            
+            total = digit + (k % 10) + carry
+            carry = total // 10
+            result.append(total % 10)
+            
+            k //= 10
+        
+        if carry:
+            result.append(carry)
+        
+        return result[::-1]
+
 993
+class Solution:
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        x_parent, x_depth = None, -1
+        y_parent, y_depth = None, -1
+        
+        def dfs(node, parent, depth):
+            nonlocal x_parent, x_depth, y_parent, y_depth
+            
+            if not node:
+                return
+            
+            if node.val == x:
+                x_parent, x_depth = parent, depth
+            elif node.val == y:
+                y_parent, y_depth = parent, depth
+            
+            # Early return if both x and y are found
+            if x_parent is not None and y_parent is not None:
+                return
+            
+            dfs(node.left, node, depth + 1)
+            dfs(node.right, node, depth + 1)
+        
+        dfs(root, None, 0)
+        
+        return x_depth == y_depth and x_parent != y_parent
+
 997
+class Solution:
+    def findJudge(self, n: int, trust: List[List[int]]) -> int:
+        trust_count = [0] * (n + 1)
+        trusted_by_count = [0] * (n + 1)
+        
+        for a, b in trust:
+            trust_count[a] -= 1
+            trusted_by_count[b] += 1
+        
+        for i in range(1, n + 1):
+            if trust_count[i] == 0 and trusted_by_count[i] == n - 1:
+                return i
+        
+        return -1
+
 999
+class Solution:
+    def numRookCaptures(self, board: List[List[str]]) -> int:
+        n = len(board)
+        rook_pos = None
+        for i in range(n):
+            for j in range(n):
+                if board[i][j] == 'R':
+                    rook_pos = (i, j)
+                    break
+            if rook_pos:
+                break
+        
+        if not rook_pos:
+            return 0
+        
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        count = 0
+        
+        for d in directions:
+            x, y = rook_pos
+            dx, dy = d
+            while 0 <= x + dx < n and 0 <= y + dy < n:
+                x += dx
+                y += dy
+                if board[x][y] == 'B':
+                    break
+                if board[x][y] == 'p':
+                    count += 1
+                    break
+        
+        return count
+
 1108
+1619
+from typing import List
+
+class Solution:
+    def trimMean(self, arr: List[int]) -> float:
+        arr.sort()
+        n = len(arr)
+        remove_count = int(n * 0.05)
+        trimmed_arr = arr[remove_count : n - remove_count]
+        trimmed_mean = sum(trimmed_arr) / len(trimmed_arr)
+        return trimmed_mean
+
 1122
+from typing import List
+from collections import Counter
+
+class Solution:
+    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        counter = Counter(arr1)
+        result = []
+        
+        for num in arr2:
+            result.extend([num] * counter.pop(num, 0))
+        
+        rest = sorted(counter.elements())
+        result.extend(rest)
+        
+        return result
+
+1287
+from typing import List
+
+class Solution:
+    def findSpecialInteger(self, arr: List[int]) -> int:
+        threshold = len(arr) // 4
+        count = 1
+
+        for i in range(1, len(arr)):
+            if arr[i] == arr[i - 1]:
+                count += 1
+                if count > threshold:
+                    return arr[i]
+            else:
+                count = 1
+
+        return arr[0]
+
 1128
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        count = defaultdict(int)
+        pairs = 0
+
+        for a, b in dominoes:
+            key = tuple(sorted((a, b)))
+            pairs += count[key]
+            count[key] += 1
+
+        return pairs
+
 1137
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1 or n == 2:
+            return 1
+        t0, t1, t2 = 0, 1, 1
+        for i in range(3, n + 1):
+            t3 = t0 + t1 + t2
+            t0, t1, t2 = t1, t2, t3
+        
+        return t2
+1331
+from typing import List
+
+class Solution:
+    def arrayRankTransform(self, arr: List[int]) -> List[int]:
+        if not arr:
+            return []
+        
+        sorted_arr = sorted(set(arr))
+        rank_map = {num: rank + 1 for rank, num in enumerate(sorted_arr)}
+        
+        return [rank_map[num] for num in arr]
+
 1154
+class Solution:
+    def dayOfYear(self, date: str) -> int:
+        year, month, day = map(int, date.split('-'))
+        
+        days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        
+        if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+            days_in_month[1] = 29
+        
+        return sum(days_in_month[:month - 1]) + day
+
+1935
+class Solution:
+    def canBeTypedWords(self, text: str, brokenLetters: str) -> int:
+        broken_set = set(brokenLetters)
+        words = text.split()
+        count = 0
+        
+        for word in words:
+            if not any(char in broken_set for char in word):
+                count += 1
+        
+        return count
+
+1360
+from datetime import datetime
+
+class Solution:
+    def daysBetweenDates(self, date1: str, date2: str) -> int:
+        # Parse input dates into datetime objects
+        date_format = "%Y-%m-%d"
+        d1 = datetime.strptime(date1, date_format).date()
+        d2 = datetime.strptime(date2, date_format).date()
+        
+        # Calculate the difference in days
+        delta = abs(d2 - d1).days
+        
+        return delta
+
 1175
+class Solution:
+    def numPrimeArrangements(self, n: int) -> int:
+        MOD = 10**9 + 7
+        
+        def is_prime(num):
+            if num <= 1:
+                return False
+            if num <= 3:
+                return True
+            if num % 2 == 0 or num % 3 == 0:
+                return False
+            i = 5
+            while i * i <= num:
+                if num % i == 0 or num % (i + 2) == 0:
+                    return False
+                i += 6
+            return True
+        
+        count_primes = sum(1 for i in range(1, n + 1) if is_prime(i))
+        
+        def factorial(num):
+            if num <= 1:
+                return 1
+            result = 1
+            for i in range(2, num + 1):
+                result = (result * i) % MOD
+            return result
+        
+        prime_factorial = factorial(count_primes)
+        non_prime_factorial = factorial(n - count_primes)
+        
+        return (prime_factorial * non_prime_factorial) % MOD
+
 1184
+from typing import List
+
+class Solution:
+    def distanceBetweenBusStops(self, distance: List[int], start: int, destination: int) -> int:
+        if start > destination:
+            start, destination = destination, start
+        
+        clockwise_distance = sum(distance[start:destination])
+        counterclockwise_distance = sum(distance[destination:] + distance[:start])
+        
+        return min(clockwise_distance, counterclockwise_distance)
+
 1185
+from datetime import datetime
+
+class Solution:
+    def dayOfTheWeek(self, day: int, month: int, year: int) -> str:
+        # Create a datetime object for the given date
+        date_object = datetime(year, month, day)
+        
+        # Get the day of the week as a string (Monday, Tuesday, etc.)
+        day_of_week = date_object.strftime("%A")
+        
+        return day_of_week
+
 1189
+from collections import Counter
+
+class Solution:
+    def maxNumberOfBalloons(self, text: str) -> int:
+        balloon_counts = {'b': 1, 'a': 1, 'l': 2, 'o': 2, 'n': 1}
+        text_counts = Counter(text)
+        max_balloons = float('inf')
+        
+        for char, count in balloon_counts.items():
+            max_balloons = min(max_balloons, text_counts.get(char, 0) // count)
 1200
 from typing import List
 
@@ -256,6 +763,17 @@ class Solution:
         return ''.join(result)
 
 1313
+from typing import List
+
+class Solution:
+    def decompressRLElist(self, nums: List[int]) -> List[int]:
+        result = []
+        for i in range(0, len(nums), 2):
+            freq = nums[i]
+            value = nums[i + 1]
+            result.extend([value] * freq)
+        return result
+
 1317
 from typing import List
 
@@ -612,8 +1130,35 @@ class Solution:
         max_power = max(max_power, current_power)
         
         return max_power
+1507
+class Solution:
+    def reformatDate(self, date: str) -> str:
+        months = {
+            "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
+            "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+            "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
+        }
+        
+        day, month, year = date.split()
+        day = day[:-2] if day[1].isdigit() else '0' + day[0]
+        month = months[month]
+        
+        return f"{year}-{month}-{day}"
 
-4550
+1550
+from typing import List
+
+class Solution:
+    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
+        count = 0
+        for num in arr:
+            if num % 2 != 0:
+                count += 1
+                if count == 3:
+                    return True
+            else:
+                count = 0
+        return False
 1768
 1935
 
